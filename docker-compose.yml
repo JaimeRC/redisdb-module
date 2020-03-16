@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  test_commands:
+    hostname: test_commands
+    container_name: test_commands
+    build:
+      context: ./
+      dockerfile: test_commands/Dockerfile
+    networks:
+      - redis_network
+    ports:
+      - 5050:5050
+    volumes:
+      - ./test_commands/:/src
+    depends_on:
+      - redis
+
+  redis:
+    hostname: redis
+    container_name: redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+    networks:
+      - redis_network
+    volumes:
+      - ./redis/redis.conf:/redis.conf
+    command: [ "redis-server", "/redis.conf" ]
+
+networks:
+  redis_network:
+    driver: bridge

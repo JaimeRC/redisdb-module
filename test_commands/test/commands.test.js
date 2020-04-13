@@ -61,12 +61,12 @@ describe('Various Commands', function () {
     })
 
     it('should handle empty buffer', async () => {
-        await redis.set(Buffer.from('name'), Buffer.from(''''))
+        await redis.set(Buffer.from('name'), Buffer.from(''))
 
         const result = await redis.getBuffer(Buffer.from('name'))
 
         expect(result).to.be.instanceof(Buffer)
-        expect(result.toString()).to.eql('''')
+        expect(result.toString()).to.eql('')
     })
 
     it('should support utf8', async () => {
@@ -86,7 +86,7 @@ describe('Various Commands', function () {
 
         const res = await redis.get('name')
 
-        expect(res).to.eql('''')
+        expect(res).to.eql('')
     })
 
     it('should support return int value', async () => {
@@ -156,7 +156,7 @@ describe('Various Commands', function () {
             try {
                 await redisEnableOfflineQueue.get('name')
             } catch (e) {
-                expect(e.message).to.eql('Stream isn't writeable and enableOfflineQueue options is false'')
+                expect(e.message).to.eql('Stream is not writeable and enableOfflineQueue options is false')
             }
         })
     })

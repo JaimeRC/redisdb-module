@@ -2,11 +2,12 @@ const Redis = require('ioredis')
 const {expect} = require('chai')
 
 describe('Command Hash', () => {
-    beforeEach(() => (new Redis(global.OPTS_REDIS)).flushall())
+
+    let redis
+    before(()=> redis = new Redis(global.OPTS_REDIS))
 
     it("should get the values ​​of each field", async () => {
-        const redis = new Redis(global.OPTS_REDIS)
-        await redis.hset("user:123", "name", "Peter", "surname", "Parker");
+        await redis.hset("user:123", "name", "Peter", "surname", "Parker")
         const res1 = await redis.hget("user:123", "name")
         expect(res1).to.eql("Peter")
 
@@ -15,8 +16,6 @@ describe('Command Hash', () => {
     })
 
     it("should be considered null if the field or key does not exist", async () => {
-        const redis = new Redis(global.OPTS_REDIS)
-
         await redis.hset("user:123", "name", "Peter")
         const res1 = await redis.hget("user:123", "surname")
         expect(res1).to.eql(null)
@@ -26,20 +25,20 @@ describe('Command Hash', () => {
     })
 
     it("should support key prefixing for sort", async () => {
-        const redis = new Redis({...global.OPTS_REDIS, keyPrefix: "user:"})
-        await redis.hset("object_1", "name", "better")
-        await redis.hset("weight_1", "value", "20")
-        await redis.hset("object_2", "name", "best")
-        await redis.hset("weight_2", "value", "30")
-        await redis.hset("object_3", "name", "good")
-        await redis.hset("weight_3", "value", "10")
-        await redis.lpush("src", "1", "2", "3")
-        await redis.sort("src", "BY", "weight_*->value", "GET", "object_*->name", "STORE", "dest")
+        const redisKeyPrefix = new Redis({...global.OPTS_REDIS, keyPrefix: "user:"})
+        await redisKeyPrefix.hset("object_1", "name", "better")
+        await redisKeyPrefix.hset("weight_1", "value", "20")
+        await redisKeyPrefix.hset("object_2", "name", "best")
+        await redisKeyPrefix.hset("weight_2", "value", "30")
+        await redisKeyPrefix.hset("object_3", "name", "good")
+        await redisKeyPrefix.hset("weight_3", "value", "10")
+        await redisKeyPrefix.lpush("src", "1", "2", "3")
+        await redisKeyPrefix.sort("src", "BY", "weight_*->value", "GET", "object_*->name", "STORE", "dest")
 
-        const result = await redis.lrange("dest", 0, -1)
+        const result = await redisKeyPrefix.lrange("dest", 0, -1)
         expect(result).to.eql(["good", "better", "best"])
 
-        const results = await redis.keys("*")
+        const results = await redisKeyPrefix.keys("*")
         expect(results).to.have.members([
             "user:object_1",
             "user:weight_1",
@@ -53,7 +52,6 @@ describe('Command Hash', () => {
     })
 
     it("should get the values ​​of each field (multi-get/multi-set)", async () => {
-        const redis = new Redis(global.OPTS_REDIS)
         await redis.hmset("user:123", "created-by:name", "Peter", "created-by:username", "@parker")
 
         const res = await redis.hmget("user:123", "created-by:name","created-by:username")
@@ -62,7 +60,6 @@ describe('Command Hash', () => {
     })
 
     it("should be considered null if the field or key does not exist (multi-get/multi-set)", async () => {
-        const redis = new Redis(global.OPTS_REDIS)
         await redis.hmset("user:123", "created-by:name", "Peter", "created-by:username", "@parker")
 
         const res = await redis.hmget("user:123", "created-by:name","not-existing-field")
@@ -71,7 +68,6 @@ describe('Command Hash', () => {
     })
 
     it("should get all the values (multi-get/multi-set)", async () => {
-        const redis = new Redis(global.OPTS_REDIS)
         await redis.hmset("user:123", "created-by:name", "Peter", "created-by:username", "@parker")
 
         const res = await redis.hgetall("user:123")
@@ -80,13 +76,7 @@ describe('Command Hash', () => {
         expect(res["created-by:username"]).to.eql("@parker")
     })
 
-
-
-
-
-
     it("should get the number of fields (multi-get/multi-set)", async () => {
-        const redis = new Redis(global.OPTS_REDIS)
         await redis.hmset("user:123", "created-by:name", "Peter", "created-by:username", "@parker")
 
         const res1 = await redis.hlen("user:123")

@@ -1,19 +1,19 @@
 const Redis = require('ioredis')
 const {expect} = require('chai')
 
-describe('Command Sets', () => {
+describe('Sets command', () => {
 
     let redis
     before(() => redis = new Redis(global.OPTS_REDIS))
 
-    it("should get a value one because the user doesn't exist", async () => {
+    it('should get a value one because the user does not exist', async () => {
 
         const result = await redis.sadd('users:blocked', 'Pepe')
 
         expect(result).to.eql(1)
     })
 
-    it("should get a value zero because the user exists", async () => {
+    it('should get a value zero because the user exists', async () => {
 
         await redis.sadd('users:blocked', 'Pepe')
 
@@ -22,7 +22,7 @@ describe('Command Sets', () => {
         expect(result).to.eql(0)
     })
 
-    it("should get a value zero because the user exists", async () => {
+    it('should get a value zero because the user exists', async () => {
 
         await redis.sadd('users:blocked', 'Pepe')
 
@@ -31,7 +31,7 @@ describe('Command Sets', () => {
         expect(result).to.eql(0)
     })
 
-    it("should get the number of members", async () => {
+    it('should get the number of members', async () => {
 
         await redis.sadd('users:blocked', 'Pepe')
         await redis.sadd('users:blocked', 'Paco')
@@ -42,7 +42,7 @@ describe('Command Sets', () => {
         expect(result).to.eql(3)
     })
 
-    it("should get all the members", async () => {
+    it('should get all the members', async () => {
 
         await redis.sadd('users:blocked', 'Pepe')
         await redis.sadd('users:blocked', 'Paco')
@@ -53,7 +53,7 @@ describe('Command Sets', () => {
         expect(result.length).to.eql(3)
     })
 
-    it("should get value one if user exists", async () => {
+    it('should get value one if user exists', async () => {
 
         await redis.sadd('users:blocked', 'Pepe')
         await redis.sadd('users:blocked', 'Paco')
@@ -64,7 +64,7 @@ describe('Command Sets', () => {
         expect(result).to.eql(1)
     })
 
-    it("should get value zero if user doesn't exists", async () => {
+    it('should get value zero if user does not exists', async () => {
 
         await redis.sadd('users:blocked', 'Pepe')
         await redis.sadd('users:blocked', 'Paco')
@@ -75,7 +75,7 @@ describe('Command Sets', () => {
         expect(result).to.eql(0)
     })
 
-    it("should get value one if user has been deleted", async () => {
+    it('should get value one if user has been deleted', async () => {
 
         await redis.sadd('users:blocked', 'Pepe')
         await redis.sadd('users:blocked', 'Paco')
@@ -85,7 +85,7 @@ describe('Command Sets', () => {
         expect(result).to.eql(1)
     })
 
-    it("should get zero if the user has not been deleted", async () => {
+    it('should get zero if the user has not been deleted', async () => {
 
         await redis.sadd('users:blocked', 'Pepe')
         await redis.sadd('users:blocked', 'Antonio')
@@ -95,7 +95,7 @@ describe('Command Sets', () => {
         expect(result).to.eql(0)
     })
 
-    it("should get the difference between sets", async () => {
+    it('should get the difference between sets', async () => {
 
         await redis.sadd('users:logged', 'Pepe','Manolo')
         await redis.sadd('users:updated', 'Manolo')
@@ -105,7 +105,7 @@ describe('Command Sets', () => {
         expect(result[0]).to.eql('Pepe')
     })
 
-    it("should get intersection between sets", async () => {
+    it('should get intersection between sets', async () => {
 
         await redis.sadd('users:logged', 'Pepe','Manolo')
         await redis.sadd('users:updated', 'Manolo')
@@ -115,7 +115,7 @@ describe('Command Sets', () => {
         expect(result[0]).to.eql('Manolo')
     })
 
-    it("should show all users in sets", async () => {
+    it('should show all users in sets', async () => {
 
         await redis.sadd('users:logged', 'Pepe','Manolo')
         await redis.sadd('users:updated', 'Manolo','Antonio')

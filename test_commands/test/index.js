@@ -15,6 +15,11 @@ describe('RedisDB Testing', () => {
 
     //require('./commands.sets.test')
 
-    require('./petitions.limit.test')
+   // require('./petitions.limit.test')
+
+    //   require('./commands.lists.test')
+
+    require('./commands.sorted.sets.test')
+
 
 })

@@ -2,14 +2,20 @@
 
 # Estructura del Proyecto
 
-    docker-compose.yml                               # Crea la red, imagenes y contenedores (RedisDB y Test_commands)
-        ├─── redis                                   # RedisDB
-        |      └─── redis.conf                       # Archivo de configuracion de RedisDB
-        └─── test_commands                           # Servicio para realizar Testing sobre RedisDB.
-               ├─── test                             # Carpeta de Test
-               |      ├─── connection.test.js        # Testing de la conexion.
-               |      ├─── commands.test.js          # Testing sobre comandos basicos (get, set, call, getBuffer, exists, keys
-               |      ├─── command.hash.test.js      # Archivos de Test
+    docker-compose.yml                                  # Crea la red, imagenes y contenedores (RedisDB y Test_commands).
+        ├─── redis                                      # RedisDB.
+        |      └─── redis.conf                          # Archivo de configuracion de RedisDB.
+        └─── test_commands                              # Servicio para realizar Testing sobre RedisDB.
+               ├─── test                                # Carpeta de Test.
+               |      ├─── index.js                     # Archivo de Iniciacion de los Test.
+               |      ├─── connection.test.js           # Testing de la conexion.
+               |      ├─── commands.test.js             # Testing sobre comandos basicos (get, set, call, getBuffer, exists, keys, etc.).
+               |      ├─── commands.hash.test.js        # Testing sobre Hash (hget, hset, hmget, hmset, etc.).
+               |      ├─── command.incr.decr.test.js    # Testing sobre comandos de incrementos y decrementos.
+               |      ├─── command.sets.test.js         # Testing sobre Conjuntos.
+               |      ├─── command.sorted.sets.js       # Testing sobre Conjuntos ordenados.
+               |      ├─── request.limit.test.js        # Testing con un ejercicio para limitar peticiones.
+               |      └─── command.lists.js             # Testing sobre Listas
                └─── Dockerfile.js                    # Acciones sobre el contenedor
 
 ## Prerequisitos
@@ -22,8 +28,8 @@
 1. Clona el repositorio.
 2. Ejecuta el comando `docker-compose up`.
 
-        Creating network "mongo_network" with driver "bridge"
-        Pulling mongo1 (redis:latest)...
+        Creating network "redis_network" with driver "bridge"
+        Pulling redis (redis:latest)...
         latest: Pulling from library/redis
         5bed26d33875: Downloading [=======>                                           ]  4.135MB/26.69MB
         ...
@@ -34,7 +40,7 @@
         Attaching to redis, test_commands
         ...
 
-3. Despues de que se creen las instancia en los contenedores, nos introduciremos dento del contenedor de `test_module` para ejecutar los test:
+3. Despues de que se creen las instancia en los contenedores, nos introduciremos dento del contenedor de `test_commands` para ejecutar los test:
        
        docker exec -it test_module sh 
        npm run test

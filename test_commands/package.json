@@ -4,7 +4,7 @@
   "description": "RedisDB testing",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./test/index.js --timeout 15000 --exit"
+    "test": "mocha ./test/index.js --timeout 15000"
   },
   "author": "Jaime Rubio",
   "license": "ISC",
